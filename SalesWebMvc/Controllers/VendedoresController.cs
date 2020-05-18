@@ -5,16 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.Servicos;
+using SalesWebMvc.Models.ViewModels;
 
 namespace SalesWebMvc.Controllers
 {
     public class VendedoresController : Controller
     {
         private readonly VendedoresServico _vendedoresServico;
-
-        public VendedoresController(VendedoresServico vendedoresServico)
+        private readonly DepartamentoServico _departamentoServico;
+        public VendedoresController(VendedoresServico vendedoresServico, DepartamentoServico departamentoServico)
         {
             _vendedoresServico = vendedoresServico;
+            _departamentoServico = departamentoServico;
         }
         public IActionResult Index()
         {
@@ -23,7 +25,9 @@ namespace SalesWebMvc.Controllers
         }
         public IActionResult Criar()
         {
-            return View();
+            var departamentos = _departamentoServico.FindAll();
+            var viewModel = new VendedorFormViewModels { Departamentos = departamentos};
+            return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
