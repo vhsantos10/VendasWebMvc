@@ -26,7 +26,7 @@ namespace SalesWebMvc.Controllers
         public IActionResult Criar()
         {
             var departamentos = _departamentoServico.FindAll();
-            var viewModel = new VendedorFormViewModels { Departamentos = departamentos};
+            var viewModel = new VendedorFormViewModels { Departamentos = departamentos };
             return View(viewModel);
         }
         [HttpPost]
@@ -34,6 +34,26 @@ namespace SalesWebMvc.Controllers
         public IActionResult Criar(Vendedores vendedores)
         {
             _vendedoresServico.Inserir(vendedores);
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Deletar(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _vendedoresServico.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Deletar(int id)
+        {
+            _vendedoresServico.Remover(id);
             return RedirectToAction(nameof(Index));
         }
     }
