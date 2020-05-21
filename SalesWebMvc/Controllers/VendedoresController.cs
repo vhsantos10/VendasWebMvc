@@ -96,7 +96,7 @@ namespace SalesWebMvc.Controllers
             try
             {
                 _vendedoresServico.Editar(vendedores);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); 
             }
             catch (NotFoundException)
             {
